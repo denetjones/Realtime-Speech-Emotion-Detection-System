@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Users | Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+        }
+
+        header {
+            background: #111827;
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            color: #fff;
+            font-size: 22px;
+        }
+
+        nav a {
+            color: #cbd5e1;
+            text-decoration: none;
+            margin-left: 25px;
+        }
+
+        nav a:hover {
+            color: #38bdf8;
+        }
+
+        .container {
+            padding: 60px;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 30px;
+            margin-bottom: 50px;
+        }
+
+.user-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
+    gap: 30px;
+}
+
+
+.user-card {
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    transition: 0.3s;
+    text-align: center;
+    color: #111;
+}
+
+.card-blue {
+    background: linear-gradient(135deg, #dbeafe, #eff6ff);
+}
+
+.card-green {
+    background: linear-gradient(135deg, #dcfce7, #f0fdf4);
+}
+
+.card-purple {
+    background: linear-gradient(135deg, #ede9fe, #f5f3ff);
+}
+
+.card-orange {
+    background: linear-gradient(135deg, #ffedd5, #fff7ed);
+}
+
+.user-card:hover {
+    transform: translateY(-8px);
+}
+
+        .user-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .user-card img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid #2563eb;
+        }
+
+        .user-card h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .user-card p {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            background: #2563eb;
+            color: #fff;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        footer {
+            background: #111827;
+            color: #9ca3af;
+            text-align: center;
+            padding: 18px;
+            margin-top: 80px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>SpeechEmotionRecognition - ADMIN</h1>
+    <nav>
+        <a href="/admin_home"><i class="bi bi-house"></i> Home</a>
+        <a href="/admin_add_dataset"><i class="bi bi-database-add"></i> Add Dataset</a>
+        <a href="/admin_view_user"><i class="bi bi-people"></i> View Users</a>
+        <a href="/"><i class="bi bi-box-arrow-right"></i> Logout</a>
+    </nav>
+</header>
+
+<div class="container">
+    <h2 class="title">Registered Users</h2>
+
+    <div class="user-grid">
+        {% for user in users %}
+        <div class="user-card
+        {% if loop.index % 4 == 1 %}card-blue
+        {% elif loop.index % 4 == 2 %}card-green
+        {% elif loop.index % 4 == 3 %}card-purple
+        {% else %}card-orange
+        {% endif %}
+    ">
+            <img src="{{ url_for('static', filename='uploads/' + user.photo) }}" alt="User Photo">
+            <h3>{{ user.name }}</h3>
+            <p><i class="bi bi-envelope"></i> {{ user.email }}</p>
+            <p><i class="bi bi-telephone"></i> {{ user.contact }}</p>
+            <p><i class="bi bi-gender-ambiguous"></i> {{ user.gender }}</p>
+            <p><i class="bi bi-calendar"></i> {{ user.dob }}</p>
+            <span class="badge">Active User</span>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<footer>
+    © 2025 Speech Emotion Recognition System | Admin Panel
+</footer>
+
+</body>
+</html>

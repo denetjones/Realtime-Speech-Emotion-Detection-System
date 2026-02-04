@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Dashboard | Speech Emotion Recognition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+            color: #222;
+        }
+
+        /* NAVBAR */
+        header {
+            background: #111827;
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            color: #fff;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        nav a {
+            color: #cbd5e1;
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #38bdf8;
+        }
+
+        /* HERO */
+        .hero {
+            height: 420px;
+            background:
+                linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                url("static/images/img2.webp");
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            padding-left: 80px;
+            color: #fff;
+        }
+
+        .hero-content {
+            max-width: 650px;
+        }
+
+        .hero-content h2 {
+            font-size: 38px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .hero-content p {
+            font-size: 17px;
+            line-height: 1.8;
+            opacity: 0.95;
+        }
+
+        /* DASHBOARD */
+        .dashboard {
+            padding: 70px 60px;
+        }
+
+        .dashboard h3 {
+            font-size: 30px;
+            text-align: center;
+            margin-bottom: 50px;
+            font-weight: 600;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 35px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 18px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+        }
+
+        .card i {
+            font-size: 42px;
+            color: #2563eb;
+            margin-bottom: 18px;
+        }
+
+        .card h4 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 15px;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        .card a {
+            display: inline-block;
+            padding: 10px 22px;
+            background: #2563eb;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .card a:hover {
+            background: #1d4ed8;
+        }
+
+        footer {
+            background: #111827;
+            color: #9ca3af;
+            text-align: center;
+            padding: 18px;
+            font-size: 14px;
+        }
+                .flash-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+}
+
+.flash-message {
+    padding: 12px 25px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-weight: 500;
+    color: #fff;
+    animation: fadeOut 5s forwards;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    font-size: 1em;
+}
+
+.flash-message.success {
+    background-color: #28a745;
+}
+
+.flash-message.danger {
+    background-color: #dc3545;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>SpeechEmotionRecognition - USER</h1>
+    <nav>
+        <a href="/user_home"><i class="bi bi-house"></i> Home</a>
+        <a href="/user_live_test"><i class="bi bi-mic-fill"></i> Live Test</a>
+        <a href="/user_record_test"><i class="bi bi-upload"></i> Record Test</a>
+        <a href="/user_view_history"><i class="bi bi-clock-history"></i> View History</a>
+        <a href="/"><i class="bi bi-box-arrow-right"></i> Logout</a>
+    </nav>
+</header>
+
+<section class="hero">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-container">
+        {% for category, message in messages %}
+        <div class="flash-message {{ category }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+    <div class="hero-content">
+        <h2>Speech Emotion Recognition</h2>
+        <p>
+            Manage speech emotion datasets, monitor registered users,
+            and maintain AI models that detect human emotions from voice signals.
+        </p>
+    </div>
+</section>
+
+<section class="dashboard">
+    <div class="card" style="max-width:500px;margin:auto;">
+        <h4>Upload Audio</h4>
+
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="audio" accept=".wav,.mp3,.ogg" required>
+            <br><br>
+            <button type="submit" class="btn">Analyze</button>
+        </form>
+
+        {% if text %}
+        <hr>
+        <h4>Extracted Text</h4>
+        <p>{{ text }}</p>
+
+        <h4>Detected Emotions</h4>
+        {% if emotions %}
+        <ul>
+            {% for emotion in emotions %}
+            <li><b>{{ emotion }}</b></li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No emotion keywords matched</p>
+        {% endif %}
+        {% endif %}
+    </div>
+
+</section>
+
+<footer>
+    © 2025 Speech Emotion Recognition System | User Panel
+</footer>
+<script>
+    setTimeout(() => {
+        document.querySelectorAll('.flash-message').forEach(msg => {
+            msg.style.display = "none";
+        });
+    }, 4000);
+</script>
+</body>
+</html>

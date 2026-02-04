@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Live Voice Test | Speech Emotion Recognition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+            color: #222;
+        }
+
+        /* NAVBAR */
+        header {
+            background: #111827;
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            color: #fff;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        nav a {
+            color: #cbd5e1;
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #38bdf8;
+        }
+
+        /* HERO */
+        .hero {
+            height: 320px;
+            background:
+                linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+                url("/static/images/img2.webp");
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            padding-left: 80px;
+            color: #fff;
+        }
+
+        .hero-content h2 {
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .hero-content p {
+            font-size: 16px;
+            line-height: 1.7;
+            opacity: 0.95;
+        }
+
+        /* LIVE TEST SECTION */
+        .dashboard {
+            padding: 70px 60px;
+            text-align: center;
+        }
+
+        .dashboard h3 {
+            font-size: 30px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .dashboard p {
+            font-size: 16px;
+            opacity: 0.8;
+            margin-bottom: 40px;
+        }
+
+        .live-card {
+            max-width: 500px;
+            margin: auto;
+            background: #fff;
+            border-radius: 18px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        .live-card i {
+            font-size: 50px;
+            color: #2563eb;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            font-size: 15px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+            font-weight: 500;
+        }
+
+        .btn-start {
+            background: #16a34a;
+            color: #fff;
+        }
+
+        .btn-stop {
+            background: #dc2626;
+            color: #fff;
+            display: none;
+        }
+
+        .result {
+            margin-top: 30px;
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: left;
+        }
+
+        .result h4 {
+            margin-bottom: 10px;
+            color: #2563eb;
+        }
+
+        footer {
+            background: #111827;
+            color: #9ca3af;
+            text-align: center;
+            padding: 18px;
+            font-size: 14px;
+        }
+                        .flash-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+}
+
+.flash-message {
+    padding: 12px 25px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-weight: 500;
+    color: #fff;
+    animation: fadeOut 5s forwards;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    font-size: 1em;
+}
+
+.flash-message.success {
+    background-color: #28a745;
+}
+
+.flash-message.danger {
+    background-color: #dc3545;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>SpeechEmotionRecognition - USER</h1>
+    <nav>
+        <a href="/user_home"><i class="bi bi-house"></i> Home</a>
+        <a href="/user_live_test"><i class="bi bi-mic-fill"></i> Live Test</a>
+        <a href="/user_record_test"><i class="bi bi-upload"></i> Record Test</a>
+        <a href="/user_view_history"><i class="bi bi-clock-history"></i> View History</a>
+        <a href="/"><i class="bi bi-box-arrow-right"></i> Logout</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <div class="hero-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-container">
+            {% for category, message in messages %}
+            <div class="flash-message {{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+        <h2>Live Voice Emotion Detection</h2>
+        <p>
+            Speak through your microphone and analyze emotions
+            from your voice in real time using AI.
+        </p>
+    </div>
+</section>
+
+<section class="dashboard">
+    <h3>Live Voice Test</h3>
+    <p>Click start, speak clearly for a few seconds, then stop recording.</p>
+
+    <div class="live-card">
+        <i class="bi bi-mic-fill"></i><br>
+
+        <button id="start" class="btn btn-start">
+            <i class="bi bi-play-fill"></i> Start Recording
+        </button>
+
+        <button id="stop" class="btn btn-stop">
+            <i class="bi bi-stop-fill"></i> Stop Recording
+        </button>
+
+        <form id="audioForm" method="POST" enctype="multipart/form-data">
+            <input type="file" name="audio" id="audioInput" hidden>
+        </form>
+
+        {% if text %}
+        <div class="result">
+            <h4>Extracted Text</h4>
+            <p>{{ text }}</p>
+
+            <h4>Detected Emotions</h4>
+            {% for emotion in emotions %}
+            <b>{{ emotion }}</b><br>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<footer>
+    © 2025 Speech Emotion Recognition System | User Panel
+</footer>
+
+<script>
+    let mediaRecorder;
+    let audioChunks = [];
+
+    const startBtn = document.getElementById("start");
+    const stopBtn = document.getElementById("stop");
+
+    startBtn.onclick = async () => {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+
+        mediaRecorder.start();
+        audioChunks = [];
+
+        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+
+        startBtn.style.display = "none";
+        stopBtn.style.display = "inline-block";
+    };
+
+    stopBtn.onclick = () => {
+        mediaRecorder.stop();
+
+        mediaRecorder.onstop = () => {
+            const blob = new Blob(audioChunks, { type: "audio/webm" });
+            const file = new File([blob], "live_audio.webm");
+
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            document.getElementById("audioInput").files = dataTransfer.files;
+
+            document.getElementById("audioForm").submit();
+        };
+
+        stopBtn.style.display = "none";
+        startBtn.style.display = "inline-block";
+    };
+</script>
+<script>
+    setTimeout(() => {
+        document.querySelectorAll('.flash-message').forEach(msg => {
+            msg.style.display = "none";
+        });
+    }, 4000);
+</script>
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Dataset | Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+            color: #222;
+        }
+
+        /* NAVBAR */
+        header {
+            background: #111827;
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            color: #fff;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        nav a {
+            color: #cbd5e1;
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #38bdf8;
+        }
+
+        /* FORM */
+        .container {
+            max-width: 700px;
+            margin: 60px auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 18px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        .container h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .container p {
+            text-align: center;
+            opacity: 0.8;
+            margin-bottom: 35px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+        }
+
+        .form-group textarea {
+            resize: none;
+        }
+
+        .file-box {
+            border: 2px dashed #cbd5e1;
+            padding: 25px;
+            text-align: center;
+            border-radius: 12px;
+            background: #f9fafb;
+        }
+
+        .file-box i {
+            font-size: 40px;
+            color: #2563eb;
+            margin-bottom: 10px;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 35px;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .btn-submit {
+            background: #2563eb;
+            color: #fff;
+        }
+
+        .btn-reset {
+            background: #e5e7eb;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        footer {
+            background: #111827;
+            color: #9ca3af;
+            text-align: center;
+            padding: 18px;
+            font-size: 14px;
+            margin-top: 80px;
+        }
+        .flash-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+}
+
+.flash-message {
+    padding: 12px 25px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-weight: 500;
+    color: #fff;
+    animation: fadeOut 5s forwards;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    font-size: 1em;
+}
+
+.flash-message.success {
+    background-color: #28a745;
+}
+
+.flash-message.danger {
+    background-color: #dc3545;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>SpeechEmotionRecognition - ADMIN</h1>
+    <nav>
+        <a href="/admin_home"><i class="bi bi-house"></i> Home</a>
+        <a href="/admin_add_dataset"><i class="bi bi-database-add"></i> Add Dataset</a>
+        <a href="/admin_view_user"><i class="bi bi-people"></i> View Users</a>
+        <a href="/"><i class="bi bi-box-arrow-right"></i> Logout</a>
+    </nav>
+</header>
+
+<div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="flash-container">
+    {% for category, message in messages %}
+    <div class="flash-message {{ category }}">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+    <h2>Add Speech Emotion Dataset</h2>
+    <p>Upload audio files or CSV feature datasets for training emotion recognition models</p>
+
+    <form action="/admin_add_dataset" method="post" enctype="multipart/form-data">
+
+        <div class="form-group">
+            <label>Dataset Name</label>
+            <input type="text" name="dataset_name" placeholder="e.g. RAVDESS, TESS, Custom Dataset" required>
+        </div>
+
+        <div class="form-group file-box">
+            <i class="bi bi-upload"></i>
+            <p>Select Dataset File</p>
+            <input type="file" name="dataset_file" accept=".csv,.wav" required>
+        </div>
+
+        <div class="btn-group">
+            <button type="submit" class="btn btn-submit">Upload Dataset</button>
+            <button type="reset" class="btn btn-reset">Clear</button>
+        </div>
+    </form>
+</div>
+
+<footer>
+    © 2025 Speech Emotion Recognition System | Admin Panel
+</footer>
+<script>
+    setTimeout(() => {
+        document.querySelectorAll('.flash-message').forEach(msg => {
+            msg.style.display = "none";
+        });
+    }, 4000);
+</script>
+</body>
+</html>

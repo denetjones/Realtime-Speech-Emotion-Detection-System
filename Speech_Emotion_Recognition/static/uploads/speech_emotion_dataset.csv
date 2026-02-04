@@ -1,0 +1,7 @@
+filename,emotion,dataset,mfcc_1,mfcc_2,mfcc_3,mfcc_4,mfcc_5,chroma,mel,zcr,rms
+03-01-05-02-02-01-12.wav,angry,RAVDESS,-432.12,120.45,18.33,-2.44,7.56,0.56,2.14,0.084,0.031
+03-01-03-01-01-01-10.wav,happy,RAVDESS,-401.67,134.89,25.17,4.98,10.22,0.71,3.21,0.062,0.045
+OAF_angry_angry.wav,angry,TESS,-455.92,112.34,12.89,-6.77,4.11,0.48,1.95,0.091,0.028
+YAF_happy_happy.wav,happy,TESS,-389.33,140.12,30.22,6.41,12.09,0.79,3.88,0.054,0.051
+OAF_sad_sad.wav,sad,TESS,-420.55,118.67,15.66,-3.88,5.34,0.52,2.01,0.078,0.034
+YAF_neutral_neutral.wav,neutral,TESS,-398.21,130.44,22.31,2.77,8.91,0.66,2.98,0.067,0.041
